@@ -64,6 +64,7 @@ button.absoluteCancel {
     color: #f2f2f2;
     text-align: center;
     padding-left: 43px 43px;
+    padding-right: 43px 43px;
     text-decoration: none;
     font-size: 20px;
   }
