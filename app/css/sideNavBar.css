@@ -36,3 +36,44 @@
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
+button.absoluteSave {
+    position: absolute;
+    width: 30%;
+    bottom: 160px;
+    border: 8px solid #cccccc;
+    background-color: #cccccc;
+    left: 40px;
+} 
+
+button.absoluteCancel {
+    position: absolute;
+    width: 30%;
+    bottom: 160px;
+    border: 8px solid #cccccc;
+    background-color: #cccccc;
+    left: 150px;
+} 
+  .topnav {
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding-left: 43px 43px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
