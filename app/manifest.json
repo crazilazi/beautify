@@ -28,8 +28,13 @@
             ],
             "js": [
                 "jquery.min.js", "content.js"
+            ],
+            "css": [
+                "css/sideNavBar.css"
             ]
         }
-
+    ],
+    "web_accessible_resources": [
+        "sideNavBar.html"
     ]
 }
