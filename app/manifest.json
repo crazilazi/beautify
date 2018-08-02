@@ -30,7 +30,8 @@
                 "jquery.min.js", "content.js"
             ],
             "css": [
-                "css/sideNavBar.css"
+                "css/sideNavBar.css",
+                "css/tabs.css"
             ]
         }
     ],

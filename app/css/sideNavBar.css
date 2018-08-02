@@ -1,3 +1,8 @@
+/* Utility */
+.padding-top-0 {
+    padding-top: 0px !important;
+}
+/* side navbar */
 .sidenav {
     height: 100%;
     width: 0;
@@ -78,3 +83,21 @@ button.absoluteCancel {
     background-color: #4CAF50;
     color: white;
   }
+  
+  button.absoluteSave {
+    position: absolute;
+    width: 30%;
+    bottom: 60px;
+    border: 8px solid #cccccc;
+    background-color: #cccccc;
+    left: 40px;
+} 
+
+button.absoluteCancel {
+    position: absolute;
+    width: 30%;
+    bottom: 60px;
+    border: 8px solid #cccccc;
+    background-color: #cccccc;
+    left: 150px;
+} 

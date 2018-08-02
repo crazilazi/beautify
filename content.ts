@@ -1,3 +1,4 @@
+
 // content script
 let clickedElement: any = null;
 
@@ -8,10 +9,14 @@ document.addEventListener("mousedown", function (event) {
 
 // tslint:disable-next-line:typedef
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  // clickedElement.remove();
-  // alert($(clickedElement).text().trim());
-  console.log(clickedElement);
-  console.log($(clickedElement).parent());
+  let eleCss: string | undefined = $(clickedElement).attr("style");
+  let eleClass: string | undefined = $(clickedElement).attr("class");
+  if (eleClass) {
+    $("#Class").text(eleClass);
+  }
+  if (eleCss) {
+    $("#Style").text(eleCss);
+  }
   openNav();
 });
 
@@ -21,9 +26,17 @@ function injectSideNavBar(): void {
     // $(data).appendTo("body");
     // or if you're using jQuery 1.8+:
     $($.parseHTML(data)).appendTo("body");
+    // tslint:disable-next-line:typedef
     $("#closemybeautifynavbar").bind("click", function () {
       closeNav();
     });
+    // tslint:disable-next-line:typedef
+    $(".tablinks").bind("click", function (event) {
+      openCity(event, $(this).text().trim());
+    });
+    $("#beautifyCancel").bind("click", function () {
+      closeNav();
+    })
   });
 }
 
@@ -43,3 +56,19 @@ function closeNav() {
   }
 }
 injectSideNavBar();
+
+// tslint:disable-next-line:typedef
+function openCity(evt: any, tabName: any) {
+  // tslint:disable-next-line:typedef
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    $(tabcontent[i]).css("display", "none");
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  $("#" + tabName).css("display", "block");
+  evt.currentTarget.className += " active";
+}

@@ -1,12 +1,16 @@
-<div id="mySidenav" class="sidenav">
-  <div class="topnav">
-    <a class="active" href="#home" id="styleTab">Style</a>
-    <a href="#news" id="cssTab">Css</a>
-  </div>
-  <button class="absoluteSave" type="button">Save</button>
-  <button class="absoluteCancel" type="button">Cancel</button>
-</div>
+<div id="mySidenav" class="sidenav padding-top-0">
+    <div class="tab">
+        <button id="beautifyStyles" class="tablinks">Style</button>
+        <button id="beautifyClasses" class="tablinks">Class</button>
+    </div>
 
-<h2>Animated Sidenav Example</h2>
-<p>Click on the element below to open the side navigation menu.</p>
-<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+    <div id="Style" class="tabcontent tabEditable" contenteditable="true">
+
+    </div>
+
+    <div id="Class" class="tabcontent tabEditable" contenteditable="true">
+
+    </div>
+    <button id="beautifySave" class="absoluteSave" type="button">Save</button>
+    <button id="beautifyCancel" class="absoluteCancel" type="button">Cancel</button>
+</div>
