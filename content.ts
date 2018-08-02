@@ -1,3 +1,6 @@
+interface ILooseObject {
+  [key: string]: any;
+}
 
 // content script
 let clickedElement: any = null;
@@ -9,6 +12,10 @@ document.addEventListener("mousedown", function (event) {
 
 // tslint:disable-next-line:typedef
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  // if($("#mySidenav").length !== 0) {
+  //   $("#mySidenav").remove();
+  //   injectSideNavBar();
+  // }
   let eleCss: string | undefined = $(clickedElement).attr("style");
   let eleClass: string | undefined = $(clickedElement).attr("class");
   if (eleClass) {
@@ -16,6 +23,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
   if (eleCss) {
     $("#Style").text(eleCss);
+     // tslint:disable-next-line:typedef
+     $("#beautifySave").off().on("click", function () {
+      applyCssToElement($("#Style").text().trim(), clickedElement);
+    });
   }
   openNav();
 });
@@ -34,9 +45,11 @@ function injectSideNavBar(): void {
     $(".tablinks").bind("click", function (event) {
       openCity(event, $(this).text().trim());
     });
+    // tslint:disable-next-line:typedef
     $("#beautifyCancel").bind("click", function () {
       closeNav();
-    })
+    });
+   
   });
 }
 
@@ -71,4 +84,19 @@ function openCity(evt: any, tabName: any) {
   }
   $("#" + tabName).css("display", "block");
   evt.currentTarget.className += " active";
+}
+
+// apply css change to the current element
+
+function applyCssToElement(css: string, elementToApply: Element): void {
+  if (css.trim().length === 0) {
+    return;
+  }
+  let cssObj: ILooseObject = {};
+  // tslint:disable-next-line:typedef
+  css.split(";").forEach(function (item) {
+    const keyValue: any[] = item.split(":");
+    cssObj[keyValue[0]] = keyValue[1];
+  });
+  $(elementToApply).css(cssObj);
 }

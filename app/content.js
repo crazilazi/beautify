@@ -7,6 +7,10 @@ document.addEventListener("mousedown", function (event) {
 }, true);
 // tslint:disable-next-line:typedef
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    // if($("#mySidenav").length !== 0) {
+    //   $("#mySidenav").remove();
+    //   injectSideNavBar();
+    // }
     var eleCss = $(clickedElement).attr("style");
     var eleClass = $(clickedElement).attr("class");
     if (eleClass) {
@@ -14,6 +18,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
     if (eleCss) {
         $("#Style").text(eleCss);
+        // tslint:disable-next-line:typedef
+        $("#beautifySave").off().on("click", function () {
+            applyCssToElement($("#Style").text().trim(), clickedElement);
+        });
     }
     openNav();
 });
@@ -31,6 +39,7 @@ function injectSideNavBar() {
         $(".tablinks").bind("click", function (event) {
             openCity(event, $(this).text().trim());
         });
+        // tslint:disable-next-line:typedef
         $("#beautifyCancel").bind("click", function () {
             closeNav();
         });
@@ -65,4 +74,17 @@ function openCity(evt, tabName) {
     }
     $("#" + tabName).css("display", "block");
     evt.currentTarget.className += " active";
+}
+// apply css change to the current element
+function applyCssToElement(css, elementToApply) {
+    if (css.trim().length === 0) {
+        return;
+    }
+    var cssObj = {};
+    // tslint:disable-next-line:typedef
+    css.split(";").forEach(function (item) {
+        var keyValue = item.split(":");
+        cssObj[keyValue[0]] = keyValue[1];
+    });
+    $(elementToApply).css(cssObj);
 }

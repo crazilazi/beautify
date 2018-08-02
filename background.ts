@@ -1,6 +1,6 @@
 // background (background js) page
 chrome.contextMenus.create({
-  "title": "i wanan be beautiful",
+  "title": "beautify me",
   "id": "iwanabebeautiful",
   "contexts": ["all"]
 });
