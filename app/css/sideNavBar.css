@@ -1,0 +1,44 @@
+/* side navbar */
+
+.sidenav {
+    height: 407px;
+    width: 0;
+    position: fixed;
+    z-index: 99999999999;
+    top: 0;
+    right: 0;
+    background-color: #847070;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+}
+
+.beautifybutton {
+    position: absolute;
+    width: 50px;
+    bottom: 10px;
+    border: 8px solid #cccccc;
+    background-color: #cccccc;
+    cursor: pointer;
+}
+.beautifybutton.save{
+    margin-left: 20px;
+}
+.beautifybutton.copy{
+    margin-left: 77px;
+}
+.beautifybutton.undo{
+    margin-left: 136px;
+}
+.beautifybutton.cancel{
+    margin-left: 195px;
+}
+.beautifyActive {
+    outline-style: dotted;
+    outline-color: red;
+}

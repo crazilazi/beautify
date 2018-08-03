@@ -1,11 +1,12 @@
 {
     "manifest_version": 2,
     "name": "beautify",
-    "description": "i wanan be beautiful",
+    "description": "beautify me",
     "version": "2.0",
     "permissions": [
         "contextMenus",
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
     "icons": {
         "128": "icon.png",
@@ -28,8 +29,14 @@
             ],
             "js": [
                 "jquery.min.js", "content.js"
+            ],
+            "css": [
+                "css/sideNavBar.css",
+                "css/tabs.css"
             ]
         }
-
+    ],
+    "web_accessible_resources": [
+        "sideNavBar.html"
     ]
 }
