@@ -70,6 +70,7 @@ function injectSideNavBar() {
                 else {
                     $(beautifyClickedElement).removeAttr("style");
                 }
+                $(beautifyClickedElement).addClass("beautifyActive");
             });
             // undo class
             chrome.storage.local.get(["beautfyLastClass"], function (result) {
@@ -85,6 +86,7 @@ function injectSideNavBar() {
                 else {
                     $(beautifyClickedElement).removeAttr("class");
                 }
+                $(beautifyClickedElement).addClass("beautifyActive");
             });
         });
     });
