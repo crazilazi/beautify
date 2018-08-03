@@ -13,6 +13,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     $("#Style").val("");
     chrome.storage.local.clear();
     if (eleClass) {
+        chrome.storage.local.set({ "beautfyLastClass": eleClass.trim() });
         eleClass = eleClass.trim().split(" ").filter((item) => item.trim() !== "").join("; ").split(" ").join("\n");
         eleClass = eleClass.trim().endsWith(";") ? eleClass : eleClass.trim() + ";";
         $("#Class").val(eleClass);
@@ -70,6 +71,21 @@ function injectSideNavBar() {
                     $(beautifyClickedElement).removeAttr("style");
                 }
             });
+            // undo class
+            chrome.storage.local.get(["beautfyLastClass"], function (result) {
+                if (result.beautfyLastClass) {
+                    console.log(result.beautfyLastClass);
+                    let cssClass = result.beautfyLastClass;
+                    if (cssClass.length !== 0) {
+                        cssClass = cssClass.endsWith(";") ? cssClass.substr(0, cssClass.length - 1) : cssClass;
+                        $(beautifyClickedElement).removeAttr("class");
+                        $(beautifyClickedElement).addClass(cssClass.split(";").join(" "));
+                    }
+                }
+                else {
+                    $(beautifyClickedElement).removeAttr("class");
+                }
+            });
         });
     });
 }
@@ -114,7 +130,7 @@ function applyCssToElement() {
     }
     let cssClass = $("#Class").val() !== undefined ? $("#Class").val() : "";
     if (cssClass.length !== 0) {
-        cssClass = cssClass.endsWith(";") ? cssClass.substr(cssClass.length - 1) : cssClass;
+        cssClass = cssClass.endsWith(";") ? cssClass.substr(0, cssClass.length - 1) : cssClass;
         $(beautifyClickedElement).removeAttr("class");
         $(beautifyClickedElement).addClass(cssClass.split(";").join(" "));
         $(beautifyClickedElement).addClass("beautifyActive");
