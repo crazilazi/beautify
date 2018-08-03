@@ -5,7 +5,8 @@
     "version": "2.0",
     "permissions": [
         "contextMenus",
-        "activeTab"
+        "activeTab",
+        "storage"
     ],
     "icons": {
         "128": "icon.png",

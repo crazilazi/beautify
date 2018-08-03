@@ -4,56 +4,46 @@ interface ILooseObject {
 
 // content script
 let clickedElement: any = null;
-
-// tslint:disable-next-line:typedef
+let beautifyClickedElement: any = null;
 document.addEventListener("mousedown", function (event) {
   clickedElement = event.target;
 }, true);
 
-// tslint:disable-next-line:typedef
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  // if($("#mySidenav").length !== 0) {
-  //   $("#mySidenav").remove();
-  //   injectSideNavBar();
-  // }
-  let eleCss: string | undefined = $(clickedElement).attr("style");
-  let eleClass: string | undefined = $(clickedElement).attr("class");
+  beautifyClickedElement = clickedElement;
+  let eleCss: string | undefined = $(beautifyClickedElement).attr("style");
+  let eleClass: string | undefined = $(beautifyClickedElement).attr("class");
   if (eleClass) {
+    eleClass = eleClass.trim().split(" ").filter((item) => item.trim() !== "").join("; ").split(" ").join("\n");
+    eleClass = eleClass.trim().endsWith(";") ? eleClass : eleClass.trim() +";";
     $("#Class").text(eleClass);
   }
   if (eleCss) {
+    eleCss = eleCss.trim().split(" ").filter((item) => item.trim() !== "").join("; ").split(" ").join("\n");
+    eleCss = eleCss.trim().endsWith(";") ? eleCss : eleCss.trim() +";";
     $("#Style").text(eleCss);
-     // tslint:disable-next-line:typedef
-     $("#beautifySave").off().on("click", function () {
-      applyCssToElement($("#Style").text().trim(), clickedElement);
-    });
   }
   openNav();
 });
 
 function injectSideNavBar(): void {
-  // tslint:disable-next-line:typedef
   $.get(chrome.extension.getURL("sideNavBar.html"), function (data) {
-    // $(data).appendTo("body");
-    // or if you're using jQuery 1.8+:
     $($.parseHTML(data)).appendTo("body");
-    // tslint:disable-next-line:typedef
     $("#closemybeautifynavbar").bind("click", function () {
       closeNav();
     });
-    // tslint:disable-next-line:typedef
     $(".tablinks").bind("click", function (event) {
       openCity(event, $(this).text().trim());
     });
-    // tslint:disable-next-line:typedef
     $("#beautifyCancel").bind("click", function () {
       closeNav();
     });
-   
+    $("#beautifySave").bind("click", function () {
+      applyCssToElement();
+    });
   });
 }
 
-// tslint:disable-next-line:typedef
 function openNav() {
   let open: any = document.getElementById("mySidenav");
   if (open) {
@@ -61,18 +51,16 @@ function openNav() {
   }
 }
 
-// tslint:disable-next-line:typedef
 function closeNav() {
   let close: any = document.getElementById("mySidenav");
   if (close) {
     close.style.width = "0px";
   }
 }
+
 injectSideNavBar();
 
-// tslint:disable-next-line:typedef
 function openCity(evt: any, tabName: any) {
-  // tslint:disable-next-line:typedef
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -87,16 +75,22 @@ function openCity(evt: any, tabName: any) {
 }
 
 // apply css change to the current element
-
-function applyCssToElement(css: string, elementToApply: Element): void {
-  if (css.trim().length === 0) {
-    return;
+function applyCssToElement(): void {
+  let css = $("#Style").text().trim();
+  if (css.length !== 0) {
+    css = css.endsWith(";")? css.substr(css.length - 1) : css;
+    let cssObj: ILooseObject = {};
+    css.split(";").forEach(function (item) {
+      const keyValue: any[] = item.split(":");
+      cssObj[keyValue[0].trim()] = keyValue[1].trim();
+    });
+    $(beautifyClickedElement).removeAttr("style");
+    $(beautifyClickedElement).css(cssObj);
   }
-  let cssObj: ILooseObject = {};
-  // tslint:disable-next-line:typedef
-  css.split(";").forEach(function (item) {
-    const keyValue: any[] = item.split(":");
-    cssObj[keyValue[0]] = keyValue[1];
-  });
-  $(elementToApply).css(cssObj);
+  let cssClass = $("#Class").text().trim();
+  if (cssClass.length !== 0) {
+    cssClass = cssClass.endsWith(";")? cssClass.substr(cssClass.length - 1) : cssClass;
+    $(beautifyClickedElement).removeAttr("class");
+    $(beautifyClickedElement).addClass(cssClass.split(";").join(" "));
+  }
 }
