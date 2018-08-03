@@ -40,6 +40,9 @@ function injectSideNavBar() {
         });
         $("#beautifyCancel").bind("click", function () {
             closeNav();
+            $('body').find(".beautifyActive").each(function () {
+                $(this).removeClass("beautifyActive");
+            });
         });
         $("#beautifySave").bind("click", function () {
             applyCssToElement();
