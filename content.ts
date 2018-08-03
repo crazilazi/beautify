@@ -16,12 +16,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (eleClass) {
     eleClass = eleClass.trim().split(" ").filter((item) => item.trim() !== "").join("; ").split(" ").join("\n");
     eleClass = eleClass.trim().endsWith(";") ? eleClass : eleClass.trim() +";";
-    $("#Class").text(eleClass);
+    $("#Class").val(eleClass);
   }
   if (eleCss) {
     eleCss = eleCss.trim().split(" ").filter((item) => item.trim() !== "").join("; ").split(" ").join("\n");
     eleCss = eleCss.trim().endsWith(";") ? eleCss : eleCss.trim() +";";
-    $("#Style").text(eleCss);
+    $("#Style").val(eleCss);
   }
   openNav();
 });
@@ -76,18 +76,18 @@ function openCity(evt: any, tabName: any) {
 
 // apply css change to the current element
 function applyCssToElement(): void {
-  let css = $("#Style").text().trim();
+  let css = $("#Style").val() !== undefined ? $("#Style").val() as string : "";
   if (css.length !== 0) {
     css = css.endsWith(";")? css.substr(css.length - 1) : css;
     let cssObj: ILooseObject = {};
-    css.split(";").forEach(function (item) {
+    css.split(";").filter((item) => item.trim() !== "").forEach(function (item) {
       const keyValue: any[] = item.split(":");
       cssObj[keyValue[0].trim()] = keyValue[1].trim();
     });
     $(beautifyClickedElement).removeAttr("style");
     $(beautifyClickedElement).css(cssObj);
   }
-  let cssClass = $("#Class").text().trim();
+  let cssClass = $("#Class").val() !== undefined ? $("#Class").val() as string : ""
   if (cssClass.length !== 0) {
     cssClass = cssClass.endsWith(";")? cssClass.substr(cssClass.length - 1) : cssClass;
     $(beautifyClickedElement).removeAttr("class");
