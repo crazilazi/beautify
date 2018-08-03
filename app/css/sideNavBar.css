@@ -18,20 +18,23 @@
     }
 }
 
-button.absoluteSave {
+.beautifybutton {
     position: absolute;
-    width: 30%;
+    width: 50px;
     bottom: 10px;
     border: 8px solid #cccccc;
     background-color: #cccccc;
-    left: 40px;
+    cursor: pointer;
 }
-
-button.absoluteCancel {
-    position: absolute;
-    width: 30%;
-    bottom: 10px;
-    border: 8px solid #cccccc;
-    background-color: #cccccc;
-    left: 150px;
+.beautifybutton.save{
+    margin-left: 20px;
+}
+.beautifybutton.copy{
+    margin-left: 77px;
+}
+.beautifybutton.undo{
+    margin-left: 136px;
+}
+.beautifybutton.cancel{
+    margin-left: 195px;
 }

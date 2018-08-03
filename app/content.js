@@ -9,13 +9,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     beautifyClickedElement = clickedElement;
     let eleCss = $(beautifyClickedElement).attr("style");
     let eleClass = $(beautifyClickedElement).attr("class");
+    $("#Class").val("");
+    $("#Style").val("");
+    chrome.storage.local.clear();
     if (eleClass) {
         eleClass = eleClass.trim().split(" ").filter((item) => item.trim() !== "").join("; ").split(" ").join("\n");
         eleClass = eleClass.trim().endsWith(";") ? eleClass : eleClass.trim() + ";";
         $("#Class").val(eleClass);
     }
     if (eleCss) {
-        eleCss = eleCss.trim().split(" ").filter((item) => item.trim() !== "").join("; ").split(" ").join("\n");
+        chrome.storage.local.set({ "beautfyLastStyle": eleCss.trim() });
+        eleCss = eleCss.trim().split(";").filter((item) => item.trim() !== "").map((item) => item.split(":").map((itm) => itm.trim()).join(":").trim()).join(";()").split("()").join("\n");
         eleCss = eleCss.trim().endsWith(";") ? eleCss : eleCss.trim() + ";";
         $("#Style").val(eleCss);
     }
@@ -35,6 +39,30 @@ function injectSideNavBar() {
         });
         $("#beautifySave").bind("click", function () {
             applyCssToElement();
+        });
+        $("#beautifyCopy").bind("click", function () {
+            copyToClipboard($("#Style").val());
+        });
+        $("#beautifyUndo").bind("click", function () {
+            chrome.storage.local.get(["beautfyLastStyle"], function (result) {
+                if (result.beautfyLastStyle) {
+                    console.log(result.beautfyLastStyle);
+                    let css = result.beautfyLastStyle;
+                    if (css.length !== 0) {
+                        css = css.endsWith(";") ? css.substr(0, css.length - 1) : css;
+                        let cssObjx = {};
+                        css.split(";").filter((item) => item.trim() !== "").forEach(function (item) {
+                            const keyValue = item.split(":");
+                            cssObjx[keyValue[0].trim()] = keyValue[1].trim();
+                        });
+                        $(beautifyClickedElement).removeAttr("style");
+                        $(beautifyClickedElement).css(cssObjx);
+                    }
+                }
+                else {
+                    $(beautifyClickedElement).removeAttr("style");
+                }
+            });
         });
     });
 }
@@ -68,7 +96,7 @@ function openCity(evt, tabName) {
 function applyCssToElement() {
     let css = $("#Style").val() !== undefined ? $("#Style").val() : "";
     if (css.length !== 0) {
-        css = css.endsWith(";") ? css.substr(css.length - 1) : css;
+        css = css.endsWith(";") ? css.substr(0, css.length - 1) : css;
         let cssObj = {};
         css.split(";").filter((item) => item.trim() !== "").forEach(function (item) {
             const keyValue = item.split(":");
@@ -83,4 +111,15 @@ function applyCssToElement() {
         $(beautifyClickedElement).removeAttr("class");
         $(beautifyClickedElement).addClass(cssClass.split(";").join(" "));
     }
+}
+// copy to clipboard
+function copyToClipboard(data) {
+    function handler(event) {
+        event.clipboardData.setData('text/plain', data);
+        event.preventDefault();
+        document.removeEventListener('copy', handler, true);
+    }
+    // console.log(data);
+    document.addEventListener('copy', handler, true);
+    document.execCommand('copy');
 }
