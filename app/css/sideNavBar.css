@@ -38,3 +38,7 @@
 .beautifybutton.cancel{
     margin-left: 195px;
 }
+.beautifyActive {
+    outline-style: dotted;
+    outline-color: red;
+}

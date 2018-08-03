@@ -23,6 +23,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         eleCss = eleCss.trim().endsWith(";") ? eleCss : eleCss.trim() + ";";
         $("#Style").val(eleCss);
     }
+    $('body').find(".beautifyActive").each(function () {
+        $(this).removeClass("beautifyActive");
+    });
+    $(beautifyClickedElement).addClass("beautifyActive");
     openNav();
 });
 function injectSideNavBar() {
@@ -92,7 +96,7 @@ function openCity(evt, tabName) {
     $("#" + tabName).css("display", "block");
     evt.currentTarget.className += " active";
 }
-// apply css change to the current element
+// apply css and class change to the current element
 function applyCssToElement() {
     let css = $("#Style").val() !== undefined ? $("#Style").val() : "";
     if (css.length !== 0) {
@@ -110,6 +114,7 @@ function applyCssToElement() {
         cssClass = cssClass.endsWith(";") ? cssClass.substr(cssClass.length - 1) : cssClass;
         $(beautifyClickedElement).removeAttr("class");
         $(beautifyClickedElement).addClass(cssClass.split(";").join(" "));
+        $(beautifyClickedElement).addClass("beautifyActive");
     }
 }
 // copy to clipboard

@@ -27,12 +27,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     eleCss = eleCss.trim().endsWith(";") ? eleCss : eleCss.trim() + ";";
     $("#Style").val(eleCss);
   }
+  $('body').find(".beautifyActive").each(function () {
+    $(this).removeClass("beautifyActive");
+  });
+  $(beautifyClickedElement).addClass("beautifyActive");
   openNav();
 });
 
 function injectSideNavBar(): void {
   $.get(chrome.extension.getURL("sideNavBar.html"), function (data) {
-    
+
     $($.parseHTML(data)).appendTo("body");
 
     $("#closemybeautifynavbar").bind("click", function () {
@@ -109,7 +113,7 @@ function openCity(evt: any, tabName: any) {
   evt.currentTarget.className += " active";
 }
 
-// apply css change to the current element
+// apply css and class change to the current element
 function applyCssToElement(): void {
   let css = $("#Style").val() !== undefined ? $("#Style").val() as string : "";
   if (css.length !== 0) {
@@ -127,17 +131,18 @@ function applyCssToElement(): void {
     cssClass = cssClass.endsWith(";") ? cssClass.substr(cssClass.length - 1) : cssClass;
     $(beautifyClickedElement).removeAttr("class");
     $(beautifyClickedElement).addClass(cssClass.split(";").join(" "));
+    $(beautifyClickedElement).addClass("beautifyActive");
   }
 }
 
 // copy to clipboard
-function  copyToClipboard (data: any) {
-  function  handler (event: any) {
-    event.clipboardData.setData('text/plain',  data);
+function copyToClipboard (data: any) {
+  function handler (event: any) {
+    event.clipboardData.setData('text/plain', data);
     event.preventDefault();
-    document.removeEventListener('copy',  handler,  true);
+    document.removeEventListener('copy', handler, true);
   }
   // console.log(data);
-  document.addEventListener('copy',  handler,  true);
+  document.addEventListener('copy', handler, true);
   document.execCommand('copy');
 } 
